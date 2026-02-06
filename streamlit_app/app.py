@@ -59,7 +59,7 @@ with st.sidebar:
     period_lookup = {
         "1m": "7d",
         "5m": "60d",
-        "15m": "90d",
+        "15m": "60d",
         "1h": "180d",
         "4h": "730d",
         "1d": "max",
