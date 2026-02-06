@@ -8,6 +8,7 @@ RSI Strategy Analyzer (Portfolio Version)
 - Does NOT write any files to disk (clean for portfolio/demo use).
 """
 
+import time
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -33,16 +34,44 @@ st.set_page_config(layout="wide", page_title="RSI Strategy Analyzer")
 # Helper function
 # -------------------------
 @st.cache_data
+
+
+@st.cache_data(ttl=3600)  # cache for 1 hour
 def fetch_data_yfinance(ticker, period="60d", interval="1h"):
-    df = yf.download(ticker, period=period, interval=interval, progress=False, auto_adjust=True)
-    if df.empty:
-        raise ValueError("No data returned — check ticker or data availability.")
-    df = df.dropna()
-    df.rename(columns={"Adj Close": "adj_close"}, inplace=True)
-    df["timestamp"] = df.index
-    df = df[["Open", "High", "Low", "Close", "Volume", "timestamp"]]
-    df.columns = ["open", "high", "low", "close", "volume", "timestamp"]
-    return df
+    last_err = None
+
+    for attempt in range(4):  # 4 tries
+        try:
+            df = yf.download(
+                ticker,
+                period=period,
+                interval=interval,
+                progress=False,
+                auto_adjust=True,
+                threads=False,
+            )
+
+            
+            if df is None or df.empty:
+                raise ValueError("Empty dataframe returned (possible rate limit).")
+
+            df = df.dropna()
+            df["timestamp"] = df.index
+
+            
+            if "Volume" not in df.columns:
+                df["Volume"] = 0
+
+            df = df[["Open", "High", "Low", "Close", "Volume", "timestamp"]]
+            df.columns = ["open", "high", "low", "close", "volume", "timestamp"]
+            return df
+
+        except Exception as e:
+            last_err = e
+            time.sleep(1.5 * (attempt + 1))  
+
+    raise RuntimeError(f"Yahoo fetch failed after retries: {last_err}")
+
 
 # -------------------------
 # UI
