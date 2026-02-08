@@ -5,7 +5,6 @@ RSI Strategy Analyzer (Portfolio Version)
 - Downloads OHLCV data from Yahoo Finance using yfinance.
 - Evaluates 3 RSI-based strategies.
 - Displays results, charts, and downloadable trade logs.
-- Does NOT write any files to disk (clean for portfolio/demo use).
 """
 
 import time
@@ -24,15 +23,15 @@ from utils.strategies import (
     tag_market_regime,
 )
 
-# -------------------------
-# SETTINGS
-# -------------------------
+
 SAVE_OUTPUTS = False  # prevent writing to local disk
 st.set_page_config(layout="wide", page_title="RSI Strategy Analyzer")
 
+
 # -------------------------
-# Helper function
+# Settings
 # -------------------------
+
 @st.cache_data
 
 
@@ -40,7 +39,7 @@ st.set_page_config(layout="wide", page_title="RSI Strategy Analyzer")
 def fetch_data_yfinance(ticker, period="60d", interval="1h"):
     last_err = None
 
-    for attempt in range(4):  # 4 tries
+    for attempt in range(4):  
         try:
             df = yf.download(
                 ticker,
@@ -50,7 +49,6 @@ def fetch_data_yfinance(ticker, period="60d", interval="1h"):
                 auto_adjust=True,
                 threads=False,
             )
-
             
             if df is None or df.empty:
                 raise ValueError("Empty dataframe returned (possible rate limit).")
