@@ -101,6 +101,10 @@ pip install -r requirements.txt
 streamlit run streamlit_app/app.py
 ```
 
+### Alternatively
+
+#### You can visit the web app directly: https://rsistrattester.streamlit.app/
+
 ### Features
 - Live data via Yahoo Finance  
 - 3 RSI strategies evaluated simultaneously
