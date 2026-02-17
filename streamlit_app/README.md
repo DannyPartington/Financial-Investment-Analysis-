@@ -4,7 +4,7 @@ Interactive Streamlit app for backtesting RSI-based trading strategies on multip
 
 ---
 
-## 📦 Requirements
+## Requirements
 Python 3.9+ and the libraries listed in `requirements.txt`.
 
 Install dependencies:
