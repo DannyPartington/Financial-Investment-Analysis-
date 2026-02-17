@@ -264,4 +264,5 @@ st.write("""
 - Slippage, commissions, and execution constraints are NOT modeled.  
 - Strategy logic is simplified for demonstration.  
 - Safe for recruiters and portfolio viewers — no files are written locally.
+- To see more of my work or get in touch, visit my wesbite at: https://dannypartington.github.io/Analytics-Portfolio/
 """)
